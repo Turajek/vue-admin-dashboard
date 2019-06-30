@@ -1,6 +1,13 @@
 <template>
   <div class="product-list">
-    <h1>Products</h1>
+    <div class="product-list-columns">
+      <div class="item">Photo</div>
+      <div class="item">Title</div>
+      <div class="item">Bar code</div>
+      <div class="item">Price netto</div>
+      <div class="item">VAT rate</div>
+      <div class="item">Price Brutto</div>
+    </div>
     <ProductItem v-for="(product,key) in products" :key="key" :product="product"/>
   </div>
 </template>
@@ -25,12 +32,17 @@ export default {
 <style lang="scss" scoped>
 .product-list {
   color: black;
-  max-width: 1000px;
-  width: 100%;
-  margin: 0 auto;
-  h1 {
+
+  &-columns {
+    display: flex;
+    justify-content: center;
     text-align: center;
-    padding: 2em;
+    padding: 10px;
+    box-shadow: 0px 0px 2px 1px $color3;
+
+    .item {
+      flex: 1;
+    }
   }
 }
 </style>

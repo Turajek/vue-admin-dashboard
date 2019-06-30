@@ -1,0 +1,28 @@
+
+$color1: #171a1d;
+$color2: #FAFAFA;
+$color3: #e6e6e6;
+
+.btn {
+    background: $color1;
+    color: #fff;
+    padding: .5em 2em;
+    border-radius: 6px;
+    text-transform: uppercase;
+    font-weight: bold;
+    border: 1px solid white;
+    font-family: inherit;
+    cursor: pointer;
+    &:hover {
+        background: #ffffff;
+        color: $color1;
+        border: 1px solid $color1;
+    }
+}
+
+.container {
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+}
