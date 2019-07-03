@@ -2,8 +2,8 @@
   <div class="products">
     <div class="container">
       <h1>Products</h1>
-      <ProductToolbar/>
-      <ProductList/>
+      <ProductToolbar />
+      <ProductList />
     </div>
   </div>
 </template>

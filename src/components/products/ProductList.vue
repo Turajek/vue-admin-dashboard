@@ -7,8 +7,9 @@
       <div class="item">Price netto</div>
       <div class="item">VAT rate</div>
       <div class="item">Price Brutto</div>
+      <div class="item"></div>
     </div>
-    <ProductItem v-for="(product,key) in products" :key="key" :product="product"/>
+    <ProductItem v-for="(product,key) in products" :key="key" :product="product" />
   </div>
 </template>
 <script>

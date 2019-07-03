@@ -1,5 +1,6 @@
 <template>
   <div class="product-form">
+    <Dialog v-if="showDialog" :dialogData="dialogData" @closed="showDialog = false" />
     <form>
       <div class="product-form-row">
         <FormItem
@@ -66,20 +67,28 @@
         id="description"
         type="textarea"
       />
-      <button class="btn" @click="manageAddProduct">Zapisz</button>
+      <button class="btn" @click="manageAddProduct" v-if="mode == 'new'">Zapisz</button>
+      <button class="btn" @click="manageEditProduct" v-if="mode == 'edit'">Zapisz</button>
     </form>
   </div>
 </template>
 <script>
 import FormItem from "@/components/ui/FormItem.vue";
-import { mapActions, mapGetters } from "vuex";
+import Dialog from "@/components/ui/Dialog.vue";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
   data() {
     return {
       product: {},
       formData: {},
-      validation: {}
+      validation: {},
+      mode: "new",
+      showDialog: false,
+      dialogData: {}
     };
+  },
+  props: {
+    productProp: { default: null }
   },
   methods: {
     manageFileUpload(file) {
@@ -97,19 +106,58 @@ export default {
         .then(r => {
           if (r.status == 201) {
             this.$emit("closed");
+            this.setNotificationData({
+              msg: r.data.message,
+              type: "alert"
+            });
           }
         })
         .catch(err => {
-          console.error(err);
+          this.setNotificationData({
+            msg: err.response.data.message,
+            type: "error"
+          });
         });
     },
-    ...mapActions(["addProduct"])
+    manageEditProduct(e) {
+      e.preventDefault();
+      var sendData = {
+        file: this.formData,
+        params: this.product,
+        id: this.productProp.id
+      };
+      this.editProduct(sendData)
+        .then(r => {
+          if (r.status == 201) {
+            this.$emit("closed");
+            this.setNotificationData({
+              msg: err.response.data.message,
+              type: "error"
+            });
+          }
+        })
+        .catch(err => {
+          this.setNotificationData({
+            msg: err.response.data.message,
+            type: "error"
+          });
+        });
+    },
+    ...mapActions(["addProduct", "editProduct"]),
+    ...mapMutations(["setNotificationData"])
   },
   computed: {
     ...mapGetters(["categories"])
   },
   components: {
-    FormItem
+    FormItem,
+    Dialog
+  },
+  created() {
+    if (this.productProp != null) {
+      this.product = this.productProp;
+      this.mode = "edit";
+    }
   }
 };
 </script>
