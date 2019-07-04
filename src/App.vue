@@ -31,5 +31,8 @@ export default {
   padding: 20px;
   background: $color2;
   min-height: 100vh;
+  @media (max-width: 1100px) {
+    margin-left: 0;
+  }
 }
 </style>

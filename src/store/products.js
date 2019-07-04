@@ -4,10 +4,11 @@ export default {
     state: {
         products: [],
         productParams: {
-            limit: 20,
+            limit: 5,
             page: 1,
             order: 4,
-            categoryId: null
+            categoryId: null,
+            filter: ''
         }
     },
     getters: {
@@ -22,8 +23,16 @@ export default {
             state.productParams.page = 1;
             this.dispatch('getProducts');
         },
+        setPage(state, page) {
+            state.productParams.page = page;
+        },
         setCategory(state, categoryId) {
             state.productParams.categoryId = categoryId;
+            state.productParams.page = 1;
+            this.dispatch('getProducts');
+        },
+        setFilter(state, filter) {
+            state.productParams.filter = filter;
             state.productParams.page = 1;
             this.dispatch('getProducts');
         },

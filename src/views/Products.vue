@@ -18,8 +18,4 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-h1 {
-  text-align: center;
-  padding: 2em;
-}
 </style>

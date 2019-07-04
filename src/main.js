@@ -4,9 +4,15 @@ import router from './router'
 import store from './store/index'
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import Paginate from 'vuejs-paginate'
+import Vuelidate from 'vuelidate'
 
 Vue.use(VueAxios, axios);
-axios.defaults.baseURL = 'http://localhost:3000'
+Vue.use(Vuelidate);
+
+Vue.component('paginate', Paginate)
+
+axios.defaults.baseURL = 'https://grocery-shop.herokuapp.com/'
 
 Vue.config.productionTip = false
 

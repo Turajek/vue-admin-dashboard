@@ -1,14 +1,18 @@
 <template>
   <div class="products-toolbar">
-    <button class="btn" @click="showNewProduct = true">Add new product</button>
-    <select @change="setCategory($event.target.value)">
+    <button class="btn products-toolbar-item" @click="showNewProduct = true">Add new product</button>
+    <select @change="setCategory($event.target.value)" class="products-toolbar-item">
       <option disabled selected>Category</option>
       <option :value="null">All</option>
-      <option value="1">Fruits</option>
-      <option value="2">Vegetables</option>
+      <option v-for="(category,key) in categories" :key="key" :value="category.id">{{category.name}}</option>
     </select>
+    <input
+      placeholder="Search"
+      @change="setFilter($event.target.value)"
+      class="products-toolbar-item"
+    />
 
-    <select @change="setOrder($event.target.value)">
+    <select @change="setOrder($event.target.value)" class="products-toolbar-item">
       <option disabled selected>Sort</option>
       <option value="1">The cheapest</option>
       <option value="2">The most expensive</option>
@@ -23,7 +27,7 @@
 <script>
 import Modal from "@/components/ui/Modal.vue";
 import ProductForm from "@/components/products/ProductForm.vue";
-import { mapActions, mapMutations } from "vuex";
+import { mapActions, mapMutations, mapGetters } from "vuex";
 export default {
   data() {
     return {
@@ -36,7 +40,10 @@ export default {
   },
   methods: {
     ...mapActions(["getCategories"]),
-    ...mapMutations(["setOrder", "setCategory"])
+    ...mapMutations(["setOrder", "setCategory", "setFilter"])
+  },
+  computed: {
+    ...mapGetters(["categories"])
   },
   created() {
     this.getCategories();
@@ -45,17 +52,26 @@ export default {
 </script>
 <style lang="scss" scoped>
 .products-toolbar {
-  padding: 10px;
+  padding: 10px 0;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  &-item {
+    width: 200px;
+    padding: 9px 15px;
+  }
+  @media (max-width: 1100px) {
+    justify-content: center;
+    &-item {
+      margin: 10px;
+    }
+  }
 }
-select {
-  width: 200px;
-  padding: 9px 15px;
+select,
+input {
   border: 1px solid $color1;
   border-radius: 4px;
   color: $color1;
-  font-size: 14.4px;
   box-shadow: none;
 }
 </style>

@@ -32,7 +32,8 @@ export default {
   background: rgba($color1, 0.8);
   z-index: 1000;
   &-in {
-    width: 700px;
+    width: 95%;
+    max-width: 700px;
     height: 90vh;
     overflow-y: auto;
     position: absolute;
@@ -40,6 +41,10 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     background: white;
+    @media (max-width: 740px) {
+      width: 100%;
+      height: 100%;
+    }
   }
   &-close {
     position: absolute;

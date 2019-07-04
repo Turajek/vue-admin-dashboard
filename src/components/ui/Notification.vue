@@ -82,8 +82,8 @@ export default {
   created() {
     if (this.notificationData.type == "alert") {
       setTimeout(() => {
-        this.$emit("closed");
-      }, 7000);
+        this.setShowNotification(false);
+      }, 5000);
     }
   }
 };

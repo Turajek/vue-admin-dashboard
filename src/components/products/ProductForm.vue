@@ -5,7 +5,8 @@
       <div class="product-form-row">
         <FormItem
           v-model="product.categoryId"
-          :validation="validation.categoryId"
+          @validate="$v.product.categoryId.$touch"
+          :validation="manageValidation('categoryId')"
           name="Category"
           id="category"
           type="select"
@@ -13,14 +14,16 @@
         />
         <FormItem
           v-model="product.title"
-          :validation="validation.title"
+          @validate="$v.product.title.$touch"
+          :validation="manageValidation('title')"
           name="Title"
           id="title"
           type="text"
         />
         <FormItem
           v-model="product.barCode"
-          :validation="validation.barCode"
+          @validate="$v.product.barCode.$touch"
+          :validation="manageValidation('barCode')"
           name="Bar code"
           id="barcode"
           type="text"
@@ -28,14 +31,16 @@
 
         <FormItem
           v-model="product.price"
-          :validation="validation.price"
+          @validate="$v.product.price.$touch"
+          :validation="manageValidation('price')"
           name="Price netto"
           id="price"
           type="number"
         />
         <FormItem
           v-model="product.priceType"
-          :validation="validation.priceType"
+          @validate="$v.product.priceType.$touch"
+          :validation="manageValidation('priceType')"
           name="Price type"
           id="price_type"
           type="select"
@@ -43,7 +48,8 @@
         />
         <FormItem
           v-model="product.vatRate"
-          :validation="validation.vatRate"
+          @validate="$v.product.vatRate.$touch"
+          :validation="manageValidation('vatRate')"
           name="Vat rate"
           id="vat rate"
           type="select"
@@ -52,17 +58,18 @@
         <div class="product-form-photo">
           <label for="upload">Photo</label>
           <input
-            id="upload"
+            id="file"
             type="file"
             @change="manageFileUpload($event.target.files[0])"
             accept="image/*"
           />
+          <div class="product-form-validation" v-if="showImgValidation">{{validationMsg.image}}</div>
         </div>
       </div>
       <FormItem
-        ref="test"
         v-model="product.description"
-        :validation="validation.description"
+        @validate="$v.product.description.$touch"
+        :validation="manageValidation('description')"
         name="Description"
         id="description"
         type="textarea"
@@ -76,6 +83,8 @@
 import FormItem from "@/components/ui/FormItem.vue";
 import Dialog from "@/components/ui/Dialog.vue";
 import { mapActions, mapGetters, mapMutations } from "vuex";
+import { required, minLength } from "vuelidate/lib/validators";
+
 export default {
   data() {
     return {
@@ -84,64 +93,117 @@ export default {
       validation: {},
       mode: "new",
       showDialog: false,
-      dialogData: {}
+      dialogData: {},
+      validationMsg: {
+        required: "This field is required",
+        length5: "This field should be at least 5 char long",
+        length10: "This field should be at least 10 char long",
+        image: "Please attach a photo"
+      },
+      showImgValidation: false
     };
   },
   props: {
     productProp: { default: null }
   },
+  validations: {
+    product: {
+      title: {
+        required,
+        length5: minLength(5)
+      },
+      categoryId: { required },
+      price: { required },
+      priceType: { required },
+      barCode: {
+        required,
+        length5: minLength(5)
+      },
+      vatRate: { required },
+      description: {
+        required,
+        length10: minLength(10)
+      }
+    }
+  },
   methods: {
+    manageValidation(property) {
+      var resultArr = [];
+      if (this.$v.product[property].$error) {
+        Object.keys(this.$v.product[property].$params).forEach(key => {
+          if (!this.$v.product[property][key]) {
+            resultArr.push(this.validationMsg[key]);
+          }
+        });
+        return resultArr;
+      } else {
+        return resultArr;
+      }
+    },
     manageFileUpload(file) {
+      this.showImgValidation = false;
       let formData = new FormData();
       formData.append("image", file);
       this.formData = formData;
     },
     manageAddProduct(e) {
       e.preventDefault();
-      var sendData = {
-        file: this.formData,
-        params: this.product
-      };
-      this.addProduct(sendData)
-        .then(r => {
-          if (r.status == 201) {
-            this.$emit("closed");
-            this.setNotificationData({
-              msg: r.data.message,
-              type: "alert"
-            });
-          }
-        })
-        .catch(err => {
-          this.setNotificationData({
-            msg: err.response.data.message,
-            type: "error"
-          });
-        });
-    },
-    manageEditProduct(e) {
-      e.preventDefault();
-      var sendData = {
-        file: this.formData,
-        params: this.product,
-        id: this.productProp.id
-      };
-      this.editProduct(sendData)
-        .then(r => {
-          if (r.status == 201) {
-            this.$emit("closed");
+      var fileValidate = document.querySelector("#file").files.length > 0;
+      this.showImgValidation = !fileValidate;
+      this.$v.$touch();
+      if (!this.$v.product.$invalid && fileValidate) {
+        var sendData = {
+          file: this.formData,
+          params: this.product
+        };
+        this.addProduct(sendData)
+          .then(r => {
+            if (r.status == 201) {
+              this.$emit("closed");
+              this.setNotificationData({
+                msg: r.data.message,
+                type: "alert"
+              });
+            }
+          })
+          .catch(err => {
             this.setNotificationData({
               msg: err.response.data.message,
               type: "error"
             });
-          }
-        })
-        .catch(err => {
-          this.setNotificationData({
-            msg: err.response.data.message,
-            type: "error"
           });
-        });
+      }
+    },
+    manageEditProduct(e) {
+      e.preventDefault();
+      e.preventDefault();
+      var fileValidate = document.querySelector("#file").files.length > 0;
+      this.showImgValidation = !fileValidate;
+      this.$v.$touch();
+      if (!this.$v.product.$invalid && fileValidate) {
+        var sendData = {
+          file: this.formData,
+          params: this.product,
+          id: this.productProp.id
+        };
+
+        this.editProduct(sendData)
+          .then(r => {
+            if (r.status == 201) {
+              this.$emit("closed");
+              this.setNotificationData({
+                msg: r.data.message,
+                type: "alert"
+              });
+            }
+          })
+          .catch(err => {
+            this.setNotificationData({
+              msg: err.response.data.message,
+              type: "error"
+            });
+          });
+      }
     },
     ...mapActions(["addProduct", "editProduct"]),
     ...mapMutations(["setNotificationData"])
@@ -168,6 +230,7 @@ export default {
   &-row {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
   }
   &-photo {
     margin: 10px auto;
@@ -177,6 +240,10 @@ export default {
       font-weight: bold;
       margin-bottom: 10px;
     }
+  }
+  &-validation {
+    color: red;
+    font-weight: bold;
   }
   .btn {
     margin-top: 20px;

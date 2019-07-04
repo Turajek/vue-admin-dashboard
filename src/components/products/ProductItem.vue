@@ -10,15 +10,26 @@
     <div class="product-item-img">
       <img :src="product.imageUrl" />
     </div>
-    <div class="product-item-cell">{{product.title}}</div>
-    <div class="product-item-cell">{{product.barCode}}</div>
     <div class="product-item-cell">
+      <b>Title:</b>
+      {{product.title}}
+    </div>
+    <div class="product-item-cell">
+      <b>Bar code:</b>
+      {{product.barCode}}
+    </div>
+    <div class="product-item-cell">
+      <b>Price:</b>
       {{product.price.toFixed(2)}} PLN
       <template v-if="product.priceType == 1">/ kg</template>
-      <template v-else>/ szt.</template>
+      <template v-else>/ ppc.</template>
     </div>
-    <div class="product-item-cell">{{Number(product.vatRate) * 100}} %</div>
     <div class="product-item-cell">
+      <b>Vat rate:</b>
+      {{Number(product.vatRate) * 100}} %
+    </div>
+    <div class="product-item-cell">
+      <b>Price brutto:</b>
       {{(Number(product.vatRate) * Number(product.price) + Number(product.price)).toFixed(2)}}
       PLN
       <template
@@ -26,7 +37,7 @@
       >/ kg</template>
       <template v-else>/ szt.</template>
     </div>
-    <div class="product-item-cell flex">
+    <div class="product-item-cell btns">
       <button class="btn" @click="showEditProduct = true">Edit</button>
       <button class="btn" @click="showDeleteDialog()">Delete</button>
     </div>
@@ -39,7 +50,7 @@
 import Modal from "@/components/ui/Modal.vue";
 import Dialog from "@/components/ui/Dialog.vue";
 import ProductForm from "@/components/products/ProductForm.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -55,6 +66,7 @@ export default {
   },
   methods: {
     ...mapActions(["deleteProduct"]),
+    ...mapMutations(["setNotificationData"]),
     showDeleteDialog() {
       this.dialogData = {
         msg: "Are you sure you want to delete this product?",
@@ -67,11 +79,10 @@ export default {
 
       if (answer) {
         this.deleteProduct(this.product.id).then(() => {
-          this.dialogData = {
+          this.setNotificationData({
             msg: "Product was deleted successfully",
             type: "alert"
-          };
-          this.showDialog = true;
+          });
         });
       }
     }
@@ -93,18 +104,51 @@ export default {
   box-shadow: 0px 0px 2px 1px $color3;
   margin: 5px 0;
   padding: 0 10px;
+  flex-wrap: wrap;
+
+  b {
+    display: none;
+    width: 50%;
+  }
   &-img {
     flex: 1;
+    text-align: center;
     img {
       height: 50px;
     }
   }
   &-cell {
     flex: 1;
-
     .btn {
       padding: 0.2em 0;
       width: 80px;
+    }
+  }
+  @media (max-width: 850px) {
+    text-align: left;
+    padding: 10px;
+    width: 100%;
+    max-width: 300px;
+    margin: 5px auto;
+    b {
+      display: inline-block;
+    }
+    &-img,
+    &-cell {
+      flex: 1 100%;
+      margin: 3px;
+      img {
+        height: 150px;
+      }
+      &.btns {
+        display: flex;
+        justify-content: center;
+        padding: 10px 0;
+        .btn {
+          padding: 10px 20px;
+          width: 40%;
+        }
+      }
     }
   }
 }

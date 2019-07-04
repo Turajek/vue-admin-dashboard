@@ -9,15 +9,27 @@
       <div class="item">Price Brutto</div>
       <div class="item"></div>
     </div>
-    <ProductItem v-for="(product,key) in products" :key="key" :product="product" />
+    <ProductItem v-for="(product,key) in products.products" :key="key" :product="product" />
+    <paginate
+      :page-count="Number(products.page_all)"
+      :click-handler="paginateHandler"
+      :prev-text="'Prev'"
+      :next-text="'Next'"
+      :container-class="'pagination'"
+    ></paginate>
   </div>
 </template>
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapMutations, mapGetters } from "vuex";
 import ProductItem from "@/components/products/ProductItem.vue";
 export default {
   methods: {
-    ...mapActions(["getProducts"])
+    ...mapActions(["getProducts"]),
+    ...mapMutations(["setPage"]),
+    paginateHandler(page) {
+      this.setPage(page);
+      this.getProducts();
+    }
   },
   computed: {
     ...mapGetters(["products"])
@@ -40,9 +52,31 @@ export default {
     text-align: center;
     padding: 10px;
     box-shadow: 0px 0px 2px 1px $color3;
-
+    @media (max-width: 850px) {
+      display: none;
+    }
     .item {
       flex: 1;
+    }
+  }
+}
+</style>
+<style lang="scss" >
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding: 1em;
+  li {
+    margin: 0 5px;
+    background: $color1;
+    padding: 10px;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 4px;
+    &.active {
+      background: #ffffff;
+      color: $color1;
+      border: 1px solid $color1;
     }
   }
 }

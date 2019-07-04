@@ -8,6 +8,8 @@
       :value="value"
       :name="name"
       @input="$emit('change', $event.target.value)"
+      @blur="$emit('validate')"
+      :class="{invalid}"
     >
       <option v-for="(option, key) in options" :key="key" :value="option.id">{{option.name}}</option>
     </select>
@@ -18,6 +20,8 @@
       :name="name"
       rows="4"
       @input="$emit('change', $event.target.value)"
+      @blur="$emit('validate')"
+      :class="{invalid}"
     />
     <input
       v-if="type != 'textarea' && type!= 'select'"
@@ -26,6 +30,8 @@
       :value="value"
       :name="name"
       @input="$emit('change', $event.target.value)"
+      @blur="$emit('validate')"
+      :class="{invalid}"
     />
     <div class="formItem-validation" v-for="(value,key) in validation" :key="key">
       <span>{{ value }}</span>
@@ -47,6 +53,11 @@ export default {
     className: { default: "" },
     id: { default: "" },
     options: { default: () => {} }
+  },
+  computed: {
+    invalid() {
+      return this.validation.length > 0;
+    }
   }
 };
 </script>
@@ -65,6 +76,9 @@ textarea {
   font-size: 14.4px;
   line-height: 22.5px;
   box-shadow: none;
+  &.invalid {
+    border: 1px solid red;
+  }
 }
 
 label {
