@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Menu />
+    <Menu :showItems="auth.isLogged" />
     <router-view class="router-view" />
     <Loader v-if="loader" />
     <Notification v-if="showNotification" />
@@ -11,15 +11,26 @@ import Menu from "@/components/menu/Menu.vue";
 import Loader from "@/components/ui/Loader.vue";
 import Notification from "@/components/ui/Notification.vue";
 
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   components: {
     Menu,
     Loader,
     Notification
   },
+  methods: {
+    ...mapMutations(["checkIfLogged", "setLoader"])
+  },
   computed: {
-    ...mapGetters(["loader", "showNotification"])
+    ...mapGetters(["loader", "showNotification", "auth"])
+  },
+  created() {
+    this.setLoader(true);
+    this.checkIfLogged();
+    if (!this.auth.isLogged) {
+      this.$router.push("/login");
+    }
+    this.setLoader(false);
   }
 };
 </script>

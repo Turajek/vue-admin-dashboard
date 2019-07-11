@@ -61,7 +61,7 @@ export default {
         async editProduct({ dispatch }, sendData) {
             const data = await axios({
                 method: 'post',
-                url: '/admin/edit-product/' + sendData.id,
+                url: '/admin/products/edit-product/' + sendData.id,
                 data: sendData.file,
                 params: sendData.params,
                 config: { headers: { 'Content-Type': 'multipart/form-data' } }
@@ -70,7 +70,7 @@ export default {
             return data
         },
         async deleteProduct({ dispatch }, id) {
-            const data = await axios.post('/admin/delete-product/' + id);
+            const data = await axios.post('/admin/products/delete-product/' + id);
             dispatch("getProducts");
             return data
         }

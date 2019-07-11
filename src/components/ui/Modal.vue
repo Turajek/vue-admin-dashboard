@@ -34,7 +34,7 @@ export default {
   &-in {
     width: 95%;
     max-width: 700px;
-    height: 90vh;
+    max-height: 90vh;
     overflow-y: auto;
     position: absolute;
     top: 50%;

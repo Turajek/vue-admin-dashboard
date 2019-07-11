@@ -6,7 +6,9 @@
           <img src="@/assets/images/logo.png" />
         </div>
       </router-link>
-      <MenuItem v-for="(item, key) in items" :key="key" :name="item" />
+      <template v-if="showItems">
+        <MenuItem v-for="(item, key) in items" :key="key" :name="item" />
+      </template>
     </div>
     <Burger class="menu-burger">
       <MenuItem v-for="(item, key) in items" :key="key" :name="item" />
@@ -21,6 +23,9 @@ export default {
     return {
       items: ["products", "orders", "users"]
     };
+  },
+  props: {
+    showItems: { default: true }
   },
   components: {
     MenuItem,

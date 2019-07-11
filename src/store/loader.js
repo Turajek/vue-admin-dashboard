@@ -9,7 +9,7 @@ export default {
     mutations: {
         setLoader(state, data) {
             if (!data) {
-                setTimeout(() => { state.loader = false }, 150)
+                setTimeout(() => { state.loader = false }, 300)
             } else {
                 state.loader = true;
 
