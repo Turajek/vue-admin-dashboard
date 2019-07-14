@@ -1,41 +1,65 @@
 <template>
   <div class="login">
     <Modal>
-      <div class="login-nav">
-        <button class="btn reverse" v-if="showSignIn" @click="showSignIn = false">Sign Up ?</button>
-        <button class="btn reverse" v-else @click="showSignIn = true">Sign In ?</button>
+      <div class="login-in">
+        <h2>Sign in</h2>
+        <form>
+          <FormItem v-model="userData.email" name="Email" id="email" type="text" />
+          <FormItem v-model="userData.password" name="Password" id="password" type="password" />
+          <button class="btn" @click="manageSignIn">Sign in</button>
+        </form>
       </div>
-      <SignIn v-if="showSignIn" />
-      <SignUp v-else />
     </Modal>
   </div>
 </template>
 <script>
+import FormItem from "@/components/ui/FormItem.vue";
 import Modal from "@/components/ui/Modal.vue";
-import SignIn from "@/components/login/SignIn.vue";
-import SignUp from "@/components/login/SignUp.vue";
+import { mapActions, mapMutations } from "vuex";
 export default {
   data() {
     return {
-      showSignIn: true
+      userData: {
+        email: "",
+        password: ""
+      }
     };
   },
+  methods: {
+    ...mapActions(["signIn"]),
+    ...mapMutations(["setIsLogged"]),
+    manageSignIn(e) {
+      e.preventDefault();
+      this.signIn(this.userData).then(res => {
+        if ((res.status = 201)) {
+          this.$router.push("/");
+        }
+      });
+    }
+  },
   components: {
-    Modal,
-    SignIn,
-    SignUp
+    FormItem,
+    Modal
+  },
+  created() {
+    this.setIsLogged(false);
   }
 };
 </script>
 <style lang="scss" scoped>
 .login {
   text-align: center;
-  position: relative;
-  &-nav {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    padding: 10px;
+  &-in {
+    padding: 1em;
+  }
+  h2 {
+    margin: 0.5em;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>

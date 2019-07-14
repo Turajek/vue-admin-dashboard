@@ -25,6 +25,7 @@ export default {
         },
         setPage(state, page) {
             state.productParams.page = page;
+            this.dispatch('getProducts');
         },
         setCategory(state, categoryId) {
             state.productParams.categoryId = categoryId;
@@ -50,7 +51,7 @@ export default {
         async addProduct({ dispatch }, sendData) {
             const data = await axios({
                 method: 'post',
-                url: '/admin/add-product',
+                url: '/admin/products/add-product',
                 data: sendData.file,
                 params: sendData.params,
                 config: { headers: { 'Content-Type': 'multipart/form-data' } }

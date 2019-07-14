@@ -28,7 +28,7 @@ export default {
     ...mapMutations(["setPage"]),
     paginateHandler(page) {
       this.setPage(page);
-      this.getProducts();
+      // this.getProducts();
     }
   },
   computed: {
@@ -62,22 +62,4 @@ export default {
 }
 </style>
 <style lang="scss" >
-.pagination {
-  display: flex;
-  justify-content: center;
-  padding: 1em;
-  li {
-    margin: 0 5px;
-    background: $color1;
-    padding: 10px;
-    color: #ffffff;
-    font-weight: bold;
-    border-radius: 4px;
-    &.active {
-      background: #ffffff;
-      color: $color1;
-      border: 1px solid $color1;
-    }
-  }
-}
 </style>

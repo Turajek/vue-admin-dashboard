@@ -6,13 +6,17 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import Paginate from 'vuejs-paginate'
 import Vuelidate from 'vuelidate'
+import VueCookies from 'vue-cookies'
+import { configAxios } from './js/axios-config'
+
 
 Vue.use(VueAxios, axios);
 Vue.use(Vuelidate);
+Vue.use(VueCookies)
 
 Vue.component('paginate', Paginate)
+configAxios();
 
-axios.defaults.baseURL = 'https://grocery-shop.herokuapp.com/'
 
 Vue.config.productionTip = false
 

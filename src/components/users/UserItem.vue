@@ -1,87 +1,74 @@
 <template>
-  <div class="product-item">
+  <div class="user-item">
     <Dialog
       v-if="showDialog"
-      @setAnswer="manageDeleteProduct"
+      @setAnswer="manageDeleteuser"
       :dialogData="dialogData"
       @closed="showDialog = false"
     />
 
-    <div class="product-item-img">
-      <img :src="product.imageUrl" />
+    <div class="user-item-cell">
+      <b>Email:</b>
+      {{user.email}}
     </div>
-    <div class="product-item-cell">
-      <b>Title:</b>
-      {{product.title}}
+    <div class="user-item-cell">
+      <b>First name:</b>
+      {{user.first_name}}
     </div>
-    <div class="product-item-cell">
-      <b>Bar code:</b>
-      {{product.barCode}}
+    <div class="user-item-cell">
+      <b>Last name:</b>
+      {{user.last_name}}
     </div>
-    <div class="product-item-cell">
-      <b>Price:</b>
-      {{product.price.toFixed(2)}} PLN
-      <template v-if="product.priceType == 1">/ kg</template>
-      <template v-else>/ ppc.</template>
+    <div class="user-item-cell">
+      <b>Created at:</b>
+      {{new Date(user.createdAt).toLocaleDateString()}}
     </div>
-    <div class="product-item-cell">
-      <b>Vat rate:</b>
-      {{Number(product.vatRate) * 100}} %
-    </div>
-    <div class="product-item-cell">
-      <b>Price brutto:</b>
-      {{(Number(product.vatRate) * Number(product.price) + Number(product.price)).toFixed(2)}}
-      PLN
-      <template
-        v-if="product.priceType == 1"
-      >/ kg</template>
-      <template v-else>/ szt.</template>
-    </div>
-    <div class="product-item-cell btns">
-      <button class="btn" @click="showEditProduct = true">Edit</button>
+
+    <div class="user-item-cell btns">
+      <button class="btn" @click="showEditUser = true">Edit</button>
       <button class="btn" @click="showDeleteDialog()">Delete</button>
     </div>
-    <Modal title="Edit product" v-if="showEditProduct" @closed="showEditProduct = false">
-      <ProductForm @closed="showEditProduct = false" :productProp="product" />
+    <Modal title="Edit user" v-if="showEditUser" @closed="showEditUser = false">
+      <UserForm @closed="showEditUser = false" :userProp="user" />
     </Modal>
   </div>
 </template>
 <script>
 import Modal from "@/components/ui/Modal.vue";
 import Dialog from "@/components/ui/Dialog.vue";
-import ProductForm from "@/components/products/ProductForm.vue";
+import UserForm from "@/components/users/UserForm.vue";
 import { mapActions, mapMutations } from "vuex";
 export default {
   data() {
     return {
-      showEditProduct: false,
+      showEditUser: false,
       showDialog: false,
       dialogData: {}
     };
   },
   props: {
-    product: {
+    user: {
       default: () => {}
     }
   },
   methods: {
-    ...mapActions(["deleteProduct"]),
+    ...mapActions(["deleteUser"]),
     ...mapMutations(["setNotificationData"]),
     showDeleteDialog() {
       this.dialogData = {
-        msg: "Are you sure you want to delete this product?",
+        msg: "Are you sure you want to delete this user?",
         type: "confirm"
       };
       this.showDialog = true;
     },
-    manageDeleteProduct(answer) {
+    manageDeleteuser(answer) {
       this.showDialog = false;
 
       if (answer) {
-        this.deleteProduct(this.product.id).then(res => {
+        this.deleteUser(this.user.id).then(res => {
           if (res.status === 200) {
             this.setNotificationData({
-              msg: "Product was deleted successfully",
+              msg: "User was deleted successfully",
               type: "alert"
             });
           }
@@ -91,13 +78,13 @@ export default {
   },
   components: {
     Modal,
-    ProductForm,
+    UserForm,
     Dialog
   }
 };
 </script>
 <style lang="scss" scoped>
-.product-item {
+.user-item {
   display: flex;
   align-items: center;
   text-align: center;

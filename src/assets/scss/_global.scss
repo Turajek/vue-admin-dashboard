@@ -40,3 +40,22 @@ h1 {
     margin: 0 auto;
     padding: 10px;
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    padding: 1em;
+    li {
+      margin: 0 5px;
+      background: $color1;
+      padding: 10px;
+      color: #ffffff;
+      font-weight: bold;
+      border-radius: 4px;
+      &.active {
+        background: #ffffff;
+        color: $color1;
+        border: 1px solid $color1;
+      }
+    }
+  }

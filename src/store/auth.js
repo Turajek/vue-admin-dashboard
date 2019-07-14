@@ -1,10 +1,11 @@
 import axios from 'axios';
+import vue from 'vue';
 
 export default {
     state: {
         auth: {
             isLogged: false,
-            token: ''
+            token: null
         }
     },
     getters: {
@@ -16,21 +17,20 @@ export default {
             state.auth.isLogged = bool;
         },
         setToken(state, token) {
-            document.cookie = "token=" + token + ";";
+            vue.prototype.$cookies.set("token", token, 60 * 30);
             state.auth.token = token;
+            axios.defaults.headers['Authorization'] = `Bearer ${token}`;
 
         },
-        checkIfLogged(state) {
-            const cookies = document.cookie.split(';');
-            console.log(cookies);
-            cookies.forEach(cookie => {
-                if (cookie.includes('token=')) {
-                    var token = cookie.replace('token=', '');
-                    state.auth = {
-                        token, isLogged: true
-                    }
+        getCookieToken(state) {
+            const token = vue.prototype.$cookies.get("token");
+            if (token) {
+                state.auth = {
+                    token, isLogged: true
                 }
-            })
+            }
+            axios.defaults.headers['Authorization'] = `Bearer ${token}`;
+
         }
     },
     actions: {
@@ -43,12 +43,6 @@ export default {
                 commit("setToken", data.data.token);
             }
             return data
-        },
-        async signUp({ commit }, userData) {
-            const data = await axios.put(
-                "/auth/sign-up", userData
-            );
-            return data
-        },
+        }
     }
 }

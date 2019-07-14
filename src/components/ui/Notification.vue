@@ -98,6 +98,10 @@ export default {
   text-align: center;
   color: red;
   z-index: 1200;
+  @media (max-width: 1100px) {
+    left: 10px;
+    width: calc(100% - 10px);
+  }
   &.danger {
     color: #a94442;
     background-color: #f2dede;

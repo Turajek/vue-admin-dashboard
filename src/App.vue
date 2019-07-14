@@ -19,14 +19,14 @@ export default {
     Notification
   },
   methods: {
-    ...mapMutations(["checkIfLogged", "setLoader"])
+    ...mapMutations(["getCookieToken", "setLoader"])
   },
   computed: {
     ...mapGetters(["loader", "showNotification", "auth"])
   },
   created() {
     this.setLoader(true);
-    this.checkIfLogged();
+    this.getCookieToken();
     if (!this.auth.isLogged) {
       this.$router.push("/login");
     }
