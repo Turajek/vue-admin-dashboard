@@ -20,6 +20,12 @@
       {{user.last_name}}
     </div>
     <div class="user-item-cell">
+      <b>Permission level:</b>
+      <template v-if="user.role_id == 2">Admin</template>
+      <template v-if="user.role_id == 1">User</template>
+      <template v-if="user.role_id == 0">-</template>
+    </div>
+    <div class="user-item-cell">
       <b>Created at:</b>
       {{new Date(user.createdAt).toLocaleDateString()}}
     </div>
@@ -99,15 +105,10 @@ export default {
     display: none;
     width: 50%;
   }
-  &-img {
-    flex: 1;
-    text-align: center;
-    img {
-      height: 50px;
-    }
-  }
+
   &-cell {
     flex: 1;
+    min-width: 100px;
     .btn {
       padding: 0.2em 0;
       width: 80px;
@@ -135,7 +136,7 @@ export default {
         padding: 10px 0;
         .btn {
           padding: 10px 20px;
-          width: 40%;
+          width: auto;
         }
       }
     }

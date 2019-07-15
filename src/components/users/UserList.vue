@@ -4,6 +4,7 @@
       <div class="item">Email</div>
       <div class="item">First name</div>
       <div class="item">Last name</div>
+      <div class="item">Permission level</div>
       <div class="item">Created at</div>
       <div class="item"></div>
     </div>
@@ -22,10 +23,10 @@ import { mapActions, mapGetters, mapMutations } from "vuex";
 import UserItem from "@/components/users/UserItem.vue";
 export default {
   methods: {
-    ...mapMutations(["setPage"]),
+    ...mapMutations(["setUserPage"]),
     ...mapActions(["getUsers"]),
     paginateHandler(nr) {
-      this.setPage(nr);
+      this.setUserPage(nr);
     }
   },
   computed: {

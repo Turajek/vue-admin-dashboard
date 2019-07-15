@@ -10,14 +10,15 @@
     </div>
   </div>
 </template>
-<style scoped>
+<style lang="scss" scoped>
 .loader {
   position: fixed;
+  z-index: 1500;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba($color1, 0.8);
 }
 .loader-in {
   position: absolute;

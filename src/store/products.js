@@ -18,21 +18,21 @@ export default {
         setProducts(state, data) {
             state.products = data;
         },
-        setOrder(state, order) {
+        setProductOrder(state, order) {
             state.productParams.order = order;
             state.productParams.page = 1;
             this.dispatch('getProducts');
         },
-        setPage(state, page) {
+        setProductPage(state, page) {
             state.productParams.page = page;
             this.dispatch('getProducts');
         },
-        setCategory(state, categoryId) {
+        setProductCategory(state, categoryId) {
             state.productParams.categoryId = categoryId;
             state.productParams.page = 1;
             this.dispatch('getProducts');
         },
-        setFilter(state, filter) {
+        setProductFilter(state, filter) {
             state.productParams.filter = filter;
             state.productParams.page = 1;
             this.dispatch('getProducts');

@@ -35,6 +35,7 @@ export default {
     },
     actions: {
         async signIn({ commit }, userData) {
+            commit('setLoader', true);
             const data = await axios.put(
                 "/auth/sign-in", userData
             );
@@ -42,6 +43,7 @@ export default {
                 commit("setIsLogged", true);
                 commit("setToken", data.data.token);
             }
+            commit('setLoader', false);
             return data
         }
     }

@@ -1,18 +1,18 @@
 <template>
   <div class="products-toolbar">
     <button class="btn products-toolbar-item" @click="showNewProduct = true">Add new product</button>
-    <select @change="setCategory($event.target.value)" class="products-toolbar-item">
+    <select @change="setProductCategory($event.target.value)" class="products-toolbar-item">
       <option disabled selected>Category</option>
       <option :value="null">All</option>
       <option v-for="(category,key) in categories" :key="key" :value="category.id">{{category.name}}</option>
     </select>
     <input
       placeholder="Search"
-      @change="setFilter($event.target.value)"
+      @change="setProductFilter($event.target.value)"
       class="products-toolbar-item"
     />
 
-    <select @change="setOrder($event.target.value)" class="products-toolbar-item">
+    <select @change="setProductOrder($event.target.value)" class="products-toolbar-item">
       <option disabled selected>Sort</option>
       <option value="1">The cheapest</option>
       <option value="2">The most expensive</option>
@@ -40,7 +40,7 @@ export default {
   },
   methods: {
     ...mapActions(["getCategories"]),
-    ...mapMutations(["setOrder", "setCategory", "setFilter"])
+    ...mapMutations(["setProductOrder", "setProductCategory", "setProductFilter"])
   },
   computed: {
     ...mapGetters(["categories"])

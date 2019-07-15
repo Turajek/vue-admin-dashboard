@@ -1,7 +1,7 @@
 import axios from 'axios';
 import router from '../router'
 export const configAxios = () => {
-    axios.defaults.baseURL = 'http://localhost:3000'
+    axios.defaults.baseURL = 'https://grocery-shop.herokuapp.com/'
     axios.interceptors.response.use(response => {
         return response
     },

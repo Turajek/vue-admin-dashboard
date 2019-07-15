@@ -36,6 +36,21 @@
           id="last_name"
           type="text"
         />
+        <FormItem
+          v-model="user.password"
+          @validate="$v.user.password.$touch"
+          :validation="manageValidation('password')"
+          name="Password"
+          id="password"
+          type="password"
+        />
+        <div class="genPass">
+          <label>Generate password</label>
+          <div class="genPass-in">
+            <div class="genPass-preview">{{genPass}}</div>
+            <div class="btn genPass-btn" @click="generatePassword()">Generate</div>
+          </div>
+        </div>
       </div>
 
       <button class="btn" @click="manageAddUser" v-if="mode == 'new'">Zapisz</button>
@@ -53,11 +68,11 @@ export default {
   data() {
     return {
       user: {},
-      formData: {},
       validation: {},
       mode: "new",
       showDialog: false,
       dialogData: {},
+      genPass: "",
       validationMsg: {
         required: "This field is required",
         email: "Please enter correct email"
@@ -72,10 +87,29 @@ export default {
       role_id: { required },
       email: { required, email },
       first_name: { required },
+      password: { required },
       last_name: { required }
     }
   },
   methods: {
+    getRand(values) {
+      return values.charAt(Math.floor(Math.random() * values.length));
+    },
+    generatePassword() {
+      var lcLetters = "abcdefghijklmnopqrstuvwxyz";
+      var ucLetters = lcLetters.toUpperCase();
+      var numbers = "0123456789";
+      var special = "!?=#*$@+-.";
+      var pass = [];
+      for (var i = 0; i < 2; ++i) {
+        pass.push(this.getRand(lcLetters));
+        pass.push(this.getRand(ucLetters));
+        pass.push(this.getRand(numbers));
+        pass.push(this.getRand(special));
+      }
+      this.genPass = pass.join("");
+      this.user.password = this.genPass;
+    },
     manageValidation(property) {
       var resultArr = [];
       if (this.$v.user[property].$error) {
@@ -93,10 +127,7 @@ export default {
       e.preventDefault();
       this.$v.$touch();
       if (!this.$v.user.$invalid) {
-        var sendData = {
-          params: this.user
-        };
-        this.addUser(sendData)
+        this.addUser(this.user)
           .then(r => {
             if (r.status == 201) {
               this.$emit("closed");
@@ -163,6 +194,7 @@ export default {
 .user-form {
   padding: 20px;
   text-align: center;
+
   &-row {
     display: flex;
     flex-wrap: wrap;
@@ -183,6 +215,29 @@ export default {
   }
   .btn {
     margin-top: 20px;
+  }
+  .genPass {
+    width: 320px;
+    padding: 10px;
+    label {
+      font-weight: bold;
+    }
+    &-in {
+      display: flex;
+      align-items: center;
+    }
+    &-preview {
+      border: 1px solid $color1;
+      padding: 10px;
+      width: 100px;
+      height: 40px;
+      margin-right: 10px;
+      font-weight: bold;
+    }
+    &-btn {
+      margin: 0;
+      padding: 0.6em;
+    }
   }
 }
 </style>

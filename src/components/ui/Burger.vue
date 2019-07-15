@@ -26,10 +26,12 @@ export default {
     font-size: 3em;
     width: 50px;
     padding-left: 10px;
+    cursor: pointer;
   }
   &-close {
-    font-size: 1.5em;
+    font-size: 2em;
     padding: 0 0 10px 10px;
+    cursor: pointer;
   }
   &-in {
     position: absolute;
