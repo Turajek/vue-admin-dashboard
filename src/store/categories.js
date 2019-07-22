@@ -15,7 +15,7 @@ export default {
     actions: {
         async getCategories({ commit }) {
             const { data } = await axios.get(
-                "/shop/get-categories"
+                "/shop/products/get-categories"
             );
             commit("setCategories", data);
             return data

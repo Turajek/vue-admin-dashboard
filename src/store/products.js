@@ -42,7 +42,7 @@ export default {
         async getProducts({ commit, state }) {
             commit('setLoader', true, { root: true })
             const { data } = await axios.get(
-                "/shop/get-products", { params: state.productParams }
+                "/shop/products/get-products", { params: state.productParams }
             );
             commit("setProducts", data);
             commit('setLoader', false, { root: true })

@@ -7,6 +7,7 @@ import loader from './loader';
 import notification from './notification';
 import auth from './auth';
 import users from './users';
+import orders from './orders';
 
 Vue.use(Vuex)
 
@@ -17,6 +18,7 @@ export default new Vuex.Store({
     loader,
     notification,
     auth,
-    users
+    users,
+    orders
   }
 })

@@ -23,6 +23,11 @@ export default new Router({
       component: () => import('./views/Users.vue')
     },
     {
+      path: '/orders',
+      name: 'orders',
+      component: () => import('./views/Orders.vue')
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('./views/Login.vue')
