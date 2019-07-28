@@ -100,6 +100,7 @@ export default {
   margin: 5px 0;
   padding: 0 10px;
   flex-wrap: wrap;
+  min-height: 52px;
 
   b {
     display: none;

@@ -1,9 +1,11 @@
 
 <template>
   <div class="users">
-    <h1>Users</h1>
-    <UserToolbar />
-    <UserList />
+    <div class="container">
+      <h1>Users</h1>
+      <UserToolbar />
+      <UserList />
+    </div>
   </div>
 </template>
 

@@ -2,13 +2,14 @@
   <div class="order-list">
     <div class="order-list-columns">
       <div class="item">Name</div>
-      <div class="item">User email</div>
+      <div class="item bigger">User email</div>
       <div class="item">Created at</div>
       <div class="item">Price netto</div>
       <div class="item">Vat</div>
       <div class="item">Price brutto</div>
+      <div class="item"></div>
     </div>
-    <OrderItem v-for="(order,key) in orders" :key="key" :order="order" />
+    <OrderItem v-for="(order,key) in orders.orders" :key="key" :order="order" />
     <paginate
       :page-count="Number(orders.page_all)"
       :click-handler="paginateHandler"
@@ -24,9 +25,9 @@ import OrderItem from "@/components/orders/OrderItem.vue";
 export default {
   methods: {
     ...mapActions(["getOrders"]),
-    ...mapMutations(["setPage"]),
+    ...mapMutations(["setOrderPage"]),
     paginateHandler(page) {
-      this.setPage(page);
+      this.setOrderPage(page);
       // this.getOrders();
     }
   },
@@ -56,6 +57,9 @@ export default {
     }
     .item {
       flex: 1;
+      &.bigger {
+        flex: 2;
+      }
     }
   }
 }

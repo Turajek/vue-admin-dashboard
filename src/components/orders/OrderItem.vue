@@ -1,16 +1,10 @@
 <template>
   <div class="order-item">
-    <Dialog
-      v-if="showDialog"
-      @setAnswer="manageDeleteOrder"
-      :dialogData="dialogData"
-      @closed="showDialog = false"
-    />
     <div class="order-item-cell">
       <b>Name:</b>
       Order {{order.id}}
     </div>
-    <div class="order-item-cell">
+    <div class="order-item-cell bigger">
       <b>User email:</b>
       {{order.users.email}}
     </div>
@@ -30,23 +24,27 @@
       <b>Price brutto</b>
       {{brutto_total.toFixed(2)}} PLN
     </div>
-    <!-- <div class="order-item-cell btns">
-      <button class="btn" @click="showEditOrder = true">Edit</button>
-      <button class="btn" @click="showDeleteDialog()">Delete</button>
-    </div>-->
+    <div class="order-item-cell">
+      <button class="btn" @click="showOrderProducts = true">Products</button>
+    </div>
+    <Modal
+      :title="'Products - order' + order.id"
+      v-if="showOrderProducts"
+      @closed="showOrderProducts = false"
+    >
+      <ProductList :products="order.products" mode="order" class="order" />
+    </Modal>
   </div>
 </template>
 <script>
 import Modal from "@/components/ui/Modal.vue";
 import Dialog from "@/components/ui/Dialog.vue";
+import ProductList from "@/components/products/ProductList.vue";
 import { mapActions, mapMutations, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      showEditOrder: false,
-      showDialog: false,
-      dialogData: {},
-      user: {}
+      showOrderProducts: false
     };
   },
   props: {
@@ -84,7 +82,8 @@ export default {
   },
   components: {
     Modal,
-    Dialog
+    Dialog,
+    ProductList
   },
   created() {
     var netto_total = 0;
@@ -112,6 +111,7 @@ export default {
   margin: 5px 0;
   padding: 0 10px;
   flex-wrap: wrap;
+  min-height: 52px;
 
   b {
     display: none;
@@ -126,6 +126,9 @@ export default {
   }
   &-cell {
     flex: 1;
+    &.bigger {
+      flex: 2;
+    }
     .btn {
       padding: 0.2em 0;
       width: 80px;

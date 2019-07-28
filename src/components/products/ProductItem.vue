@@ -37,7 +37,7 @@
       >/ kg</template>
       <template v-else>/ szt.</template>
     </div>
-    <div class="product-item-cell btns">
+    <div class="product-item-cell btns" v-if="mode != 'order'">
       <button class="btn" @click="showEditProduct = true">Edit</button>
       <button class="btn" @click="showDeleteDialog()">Delete</button>
     </div>
@@ -62,6 +62,9 @@ export default {
   props: {
     product: {
       default: () => {}
+    },
+    mode: {
+      default: "normal"
     }
   },
   methods: {
@@ -107,6 +110,7 @@ export default {
   margin: 5px 0;
   padding: 0 10px;
   flex-wrap: wrap;
+  min-height: 52px;
 
   b {
     display: none;

@@ -6,7 +6,7 @@ export default {
         orderParams: {
             limit: 5,
             page: 1,
-            order: 4,
+            order: 0,
             filter: ''
         }
     },
@@ -18,17 +18,13 @@ export default {
             state.orders = data;
         },
         setOrderOrder(state, order) {
+            console.log(order);
             state.orderParams.order = order;
             state.orderParams.page = 1;
             this.dispatch('getOrders');
         },
         setOrderPage(state, page) {
             state.orderParams.page = page;
-            this.dispatch('geOrders');
-        },
-        setOrderFilter(state, filter) {
-            state.orderParams.filter = filter;
-            state.orderParams.page = 1;
             this.dispatch('getOrders');
         },
     },

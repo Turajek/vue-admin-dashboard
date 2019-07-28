@@ -14,10 +14,10 @@
 
     <select @change="setProductOrder($event.target.value)" class="products-toolbar-item">
       <option disabled selected>Sort</option>
-      <option value="1">The cheapest</option>
-      <option value="2">The most expensive</option>
-      <option value="3">The latest</option>
-      <option value="4">The oldest</option>
+      <option value="1">The most expensive</option>
+      <option value="2">The cheapest</option>
+      <option value="3">The oldest</option>
+      <option value="4">The latest</option>
     </select>
     <Modal title="Add new product" v-if="showNewProduct" @closed="showNewProduct = false">
       <ProductForm @closed="showNewProduct = false" />
@@ -40,7 +40,11 @@ export default {
   },
   methods: {
     ...mapActions(["getCategories"]),
-    ...mapMutations(["setProductOrder", "setProductCategory", "setProductFilter"])
+    ...mapMutations([
+      "setProductOrder",
+      "setProductCategory",
+      "setProductFilter"
+    ])
   },
   computed: {
     ...mapGetters(["categories"])

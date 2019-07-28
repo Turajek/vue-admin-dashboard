@@ -7,11 +7,12 @@
       <div class="item">Price netto</div>
       <div class="item">VAT rate</div>
       <div class="item">Price Brutto</div>
-      <div class="item"></div>
+      <div class="item" v-if="mode != 'order'"></div>
     </div>
-    <ProductItem v-for="(product,key) in products.products" :key="key" :product="product" />
+    <ProductItem v-for="(product,key) in products" :key="key" :product="product" :mode="mode" />
     <paginate
-      :page-count="Number(products.page_all)"
+      v-if="mode == 'normal'"
+      :page-count="Number(page_all)"
       :click-handler="paginateHandler"
       :prev-text="'Prev'"
       :next-text="'Next'"
@@ -20,31 +21,38 @@
   </div>
 </template>
 <script>
-import { mapActions, mapMutations, mapGetters } from "vuex";
+import { mapMutations } from "vuex";
 import ProductItem from "@/components/products/ProductItem.vue";
 export default {
   methods: {
-    ...mapActions(["getProducts"]),
-    ...mapMutations(["setPage"]),
+    ...mapMutations(["setProductPage"]),
     paginateHandler(page) {
-      this.setPage(page);
-      // this.getProducts();
+      this.setProductPage(page);
     }
   },
-  computed: {
-    ...mapGetters(["products"])
+  props: {
+    products: {
+      default: () => []
+    },
+    page_all: {
+      default: 1
+    },
+    mode: {
+      default: "normal"
+    }
   },
+
   components: {
     ProductItem
-  },
-  created() {
-    this.getProducts();
   }
 };
 </script>
 <style lang="scss" scoped>
 .product-list {
   color: black;
+  &.order {
+    padding: 10px;
+  }
 
   &-columns {
     display: flex;
