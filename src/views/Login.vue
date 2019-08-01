@@ -31,7 +31,7 @@ export default {
     manageSignIn(e) {
       e.preventDefault();
       this.signIn(this.userData).then(res => {
-        if ((res.status = 201)) {
+        if ((res.status == 200)) {
           this.$router.push("/");
         }
       });
