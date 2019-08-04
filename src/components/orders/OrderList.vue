@@ -1,5 +1,5 @@
 <template>
-  <div class="order-list">
+  <div class="order-list" v-if="orders">
     <div class="order-list-columns">
       <div class="item">Name</div>
       <div class="item bigger">User email</div>
@@ -9,7 +9,7 @@
       <div class="item">Price brutto</div>
       <div class="item"></div>
     </div>
-    <OrderItem v-for="(order,key) in orders.orders" :key="key" :order="order" />
+    <OrderItem v-for="(order,key) in orders.orders" :key="key" :number="key " :order="order" />
     <paginate
       :page-count="Number(orders.page_all)"
       :click-handler="paginateHandler"

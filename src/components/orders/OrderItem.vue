@@ -2,9 +2,9 @@
   <div class="order-item">
     <div class="order-item-cell">
       <b>Name:</b>
-      Order {{order.id}}
+      Order {{number + 1}}
     </div>
-    <div class="order-item-cell bigger">
+    <div class="order-item-cell bigger" v-if="order.users">
       <b>User email:</b>
       {{order.users.email}}
     </div>
@@ -50,6 +50,9 @@ export default {
   props: {
     order: {
       default: () => {}
+    },
+    number: {
+      default: () => null
     }
   },
   methods: {

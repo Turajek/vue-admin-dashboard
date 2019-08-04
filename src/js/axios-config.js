@@ -3,6 +3,7 @@ import router from '../router'
 import store from '../store';
 export const configAxios = () => {
     axios.defaults.baseURL = 'https://grocery-shop.herokuapp.com/'
+    // axios.defaults.baseURL = 'http://localhost:3000'
     axios.interceptors.response.use(response => {
         return response
     },
